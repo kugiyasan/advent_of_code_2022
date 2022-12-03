@@ -9,3 +9,7 @@ version = "0.1.0"
 [[package]]
 name = "d2_rock_paper_scissors"
 version = "0.1.0"
+
+[[package]]
+name = "d3_rucksack"
+version = "0.1.0"
