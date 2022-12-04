@@ -1,4 +1,7 @@
-use std::{fs, ops::Range};
+use std::{
+    fs,
+    ops::{Range, RangeInclusive},
+};
 
 fn check_if_complete_overlap(r1: Range<i32>, r2: Range<i32>) -> bool {
     let r1_in_r2 = r1.start <= r2.start && r1.end >= r2.end;
@@ -6,8 +9,13 @@ fn check_if_complete_overlap(r1: Range<i32>, r2: Range<i32>) -> bool {
     r1_in_r2 || r2_in_r1
 }
 
+fn check_if_partial_overlap(r1: RangeInclusive<i32>, r2: RangeInclusive<i32>) -> bool {
+    r1.start() <= r2.end() && r1.end() >= r2.start()
+}
+
 fn main() {
     let path = "input";
+    // let path = "example";
     let buf = fs::read_to_string(path).unwrap();
 
     let input: Vec<_> = buf
@@ -34,7 +42,8 @@ fn main() {
         .iter()
         .map(|numbers| match numbers[..] {
             [n1, n2, n3, n4] => {
-                if check_if_complete_overlap(n1..n2, n3..n4) {
+                // if check_if_complete_overlap(n1..n2, n3..n4) {
+                if check_if_partial_overlap(n1..=n2, n3..=n4) {
                     1
                 } else {
                     0
