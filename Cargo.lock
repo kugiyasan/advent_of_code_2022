@@ -13,3 +13,7 @@ version = "0.1.0"
 [[package]]
 name = "d3_rucksack"
 version = "0.1.0"
+
+[[package]]
+name = "d4_camp_cleanup"
+version = "0.1.0"
