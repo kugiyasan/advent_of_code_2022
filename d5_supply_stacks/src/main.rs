@@ -12,10 +12,12 @@ fn main() {
         let procedure = parse_procedure(procedure);
 
         for (n, from, to) in procedure {
+            let mut crates = vec![];
             for _ in 0..n {
                 let item = stacks[from].pop().unwrap();
-                stacks[to].push(item);
+                crates.push(item);
             }
+            stacks[to].extend(crates.iter().rev());
         }
 
         let result: String = stacks
