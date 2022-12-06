@@ -1,23 +1,24 @@
-use itertools::izip;
 use std::fs;
 
 fn main() {
-    let path = "input";
+    // let path = "input";
     // let path = "example";
+    let path = "aoc_2022_day05_large_input.txt";
     let buf = fs::read_to_string(path).unwrap();
 
     let input: Vec<_> = buf.trim().split("\n\n").collect();
     if let &[stacks, procedure] = &input[..] {
         let mut stacks = parse_stacks(stacks);
         let procedure = parse_procedure(procedure);
+        let mut swap_buffer = vec!['\0'; 100_000_000];
 
         for (n, from, to) in procedure {
-            let mut crates = vec![];
-            for _ in 0..n {
-                let item = stacks[from].pop().unwrap();
-                crates.push(item);
-            }
-            stacks[to].extend(crates.iter().rev());
+            // https://github.com/sprunq/AdventOfCode/blob/aab6973d2950a5edc398bb2cdfdc6a15dc088c79/AoC2022/src/aoc5/mod.rs#L80
+            let len_to_swap = stacks[from].len();
+            let swap_buffer = &mut swap_buffer[0..n];
+            swap_buffer.copy_from_slice(&stacks[from][len_to_swap - n..len_to_swap]);
+            stacks[from].truncate(len_to_swap - n);
+            stacks[to].extend_from_slice(swap_buffer);
         }
 
         let result: String = stacks
@@ -25,35 +26,25 @@ fn main() {
             .map(|mut stack| stack.pop().unwrap())
             .collect();
 
-        println!("{:?}", result);
+        println!("{}", result);
+        // println!("{:?}", stacks);
+        // println!("{:?}", procedure);
     }
 }
 
-fn parse_stacks(stacks: &str) -> Vec<Vec<char>> {
-    let stacks: Vec<_> = stacks
-        .split('\n')
-        .map(|line| line.chars().skip(1).step_by(4).collect::<Vec<_>>())
-        .collect();
-
-    let stacks: Vec<_> = izip!(
-        &stacks[0], &stacks[1], &stacks[2], &stacks[3], &stacks[4], &stacks[5], &stacks[6],
-        &stacks[7]
-    )
-    .collect();
-
-    let stacks = stacks
-        .iter()
-        .map(|(c0, c1, c2, c3, c4, c5, c6, c7)| {
-            vec![c0, c1, c2, c3, c4, c5, c6, c7]
-                .iter()
-                .filter_map(|&&&c| if c != ' ' { Some(c) } else { None })
-                .collect()
-        })
-        .map(|stack: Vec<_>| stack.into_iter().rev().collect())
-        .collect();
-
-    // println!("{:?}", &stacks);
+fn parse_stacks(string: &str) -> Vec<Vec<char>> {
+    let mut stacks = vec![Vec::<char>::new(); 9];
+    for line in string.lines() {
+        for (i, c) in line.chars().skip(1).step_by(4).enumerate() {
+            if c.is_alphabetic() {
+                stacks[i].push(c);
+            }
+        }
+    }
     stacks
+        .into_iter()
+        .map(|v| v.into_iter().rev().collect())
+        .collect()
 }
 
 fn parse_procedure(procedure: &str) -> Vec<(usize, usize, usize)> {
