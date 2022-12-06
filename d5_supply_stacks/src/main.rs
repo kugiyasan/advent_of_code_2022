@@ -10,7 +10,7 @@ fn main() {
     if let &[stacks, procedure] = &input[..] {
         let mut stacks = parse_stacks(stacks);
         let procedure = parse_procedure(procedure);
-        let mut swap_buffer = vec!['\0'; 100_000_000];
+        let mut swap_buffer = vec![0u8; 100_000_000];
 
         for (n, from, to) in procedure {
             // https://github.com/sprunq/AdventOfCode/blob/aab6973d2950a5edc398bb2cdfdc6a15dc088c79/AoC2022/src/aoc5/mod.rs#L80
@@ -23,7 +23,7 @@ fn main() {
 
         let result: String = stacks
             .into_iter()
-            .map(|mut stack| stack.pop().unwrap())
+            .map(|mut stack| stack.pop().unwrap() as char)
             .collect();
 
         println!("{}", result);
@@ -32,11 +32,11 @@ fn main() {
     }
 }
 
-fn parse_stacks(string: &str) -> Vec<Vec<char>> {
-    let mut stacks = vec![Vec::<char>::new(); 9];
+fn parse_stacks(string: &str) -> Vec<Vec<u8>> {
+    let mut stacks = vec![Vec::<u8>::new(); 9];
     for line in string.lines() {
-        for (i, c) in line.chars().skip(1).step_by(4).enumerate() {
-            if c.is_alphabetic() {
+        for (i, c) in line.bytes().skip(1).step_by(4).enumerate() {
+            if c.is_ascii_alphabetic() {
                 stacks[i].push(c);
             }
         }
