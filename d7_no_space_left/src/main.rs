@@ -74,13 +74,17 @@ fn main() {
         }
     }
 
-    let sum: usize = folders
-        .iter()
-        .map(|(_, &size)| size)
-        .filter(|&size| size < 100000)
-        .sum();
+    let sum: usize = folders.values().filter(|&&size| size < 100000).sum();
 
-    println!("{:?}", directory);
-    println!("{:?}", folders);
-    println!("{}", sum);
+    let missing_space = 30_000_000 - (70_000_000 - folders.get("/").unwrap());
+    let sizes: Vec<_> = folders
+        .values()
+        .filter(|&&size| size >= missing_space)
+        .collect();
+
+    let size = sizes.iter().min().unwrap();
+
+    println!("part 1: {}", sum);
+    println!("missing_space {}", missing_space);
+    println!("part 2: {}", size);
 }
