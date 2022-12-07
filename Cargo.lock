@@ -25,3 +25,7 @@ version = "0.1.0"
 [[package]]
 name = "d6_tuning_trouble"
 version = "0.1.0"
+
+[[package]]
+name = "d7_no_space_left"
+version = "0.1.0"

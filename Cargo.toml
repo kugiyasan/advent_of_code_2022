@@ -6,5 +6,6 @@ members = [
     "d3_rucksack",
     "d4_camp_cleanup",
     "d5_supply_stacks",
-    "d6_tuning_trouble"
+    "d6_tuning_trouble",
+    "d7_no_space_left"
 ]
