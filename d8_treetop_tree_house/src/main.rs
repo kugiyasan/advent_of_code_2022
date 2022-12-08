@@ -1,9 +1,6 @@
-use std::fs;
-
 fn main() {
-    // let path = "input";
-    let path = "example";
-    let buf = fs::read_to_string(path).unwrap();
+    let buf = include_str!("../input");
+    // let buf = include_str!("../example");
 
     let input: Vec<Vec<_>> = buf
         .trim()
@@ -81,10 +78,10 @@ fn part1(input: &Vec<Vec<u32>>) {
 fn part2(input: &Vec<Vec<u32>>) {
     let height = input.len();
     let width = input[0].len();
-    let max = (0..height)
+    let max = (1..height - 1)
         .into_iter()
         .map(|y| {
-            (0..width)
+            (1..width - 1)
                 .into_iter()
                 .map(|x| scenic_score(input, y, x))
                 .max()
@@ -96,50 +93,36 @@ fn part2(input: &Vec<Vec<u32>>) {
     println!("max: {}", max);
 }
 
-fn scenic_score(input: &Vec<Vec<u32>>, tree_y: usize, tree_x: usize) -> u32 {
+fn scenic_score(input: &Vec<Vec<u32>>, tree_y: usize, tree_x: usize) -> usize {
     let height = input.len();
     let width = input[0].len();
 
-    let mut count_above = 0;
-    let mut max_tree_height = 0;
-    for y in (0..tree_y).rev() {
-        if input[y][tree_x] > max_tree_height {
-            count_above += 1;
-            max_tree_height = input[y][tree_x];
-        }
-    }
+    let tree_height = input[tree_y][tree_x];
+    let count_above = (1..tree_y)
+        .rev()
+        .take_while(|&y| input[y][tree_x] < tree_height)
+        .count()
+        + 1;
 
-    let mut count_below = 0;
-    let mut max_tree_height = 0;
-    for y in tree_y + 1..height {
-        if input[y][tree_x] > max_tree_height {
-            count_below += 1;
-            max_tree_height = input[y][tree_x];
-        }
-    }
+    let count_below = (tree_y + 1..height - 1)
+        .take_while(|&y| input[y][tree_x] < tree_height)
+        .count()
+        + 1;
 
-    let mut count_left = 0;
-    let mut max_tree_height = 0;
-    for x in (0..tree_x).rev() {
-        if input[tree_y][x] > max_tree_height {
-            count_left += 1;
-            max_tree_height = input[tree_y][x];
-        }
-    }
+    let count_left = (1..tree_x)
+        .rev()
+        .take_while(|&x| input[tree_y][x] < tree_height)
+        .count()
+        + 1;
 
-    let mut count_right = 0;
-    let mut max_tree_height = 0;
-    for x in tree_x + 1..width {
-        if input[tree_y][x] > max_tree_height {
-            count_right += 1;
-            max_tree_height = input[tree_y][x];
-        }
-    }
+    let count_right = (tree_x + 1..width - 1)
+        .take_while(|&x| input[tree_y][x] < tree_height)
+        .count()
+        + 1;
 
     println!(
         "({}, {}) {} {} {} {}",
         tree_y, tree_x, count_above, count_below, count_left, count_right
     );
     count_above * count_below * count_left * count_right
-    // (count_above + 1) * (count_below + 1) * (count_left + 1) * (count_right + 1)
 }

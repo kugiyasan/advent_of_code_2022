@@ -1,0 +1,304 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd1_calorie_counting'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d1_calorie_counting",
+                    "--package=d1_calorie_counting"
+                ],
+                "filter": {
+                    "name": "d1_calorie_counting",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd1_calorie_counting'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d1_calorie_counting",
+                    "--package=d1_calorie_counting"
+                ],
+                "filter": {
+                    "name": "d1_calorie_counting",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd2_rock_paper_scissors'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d2_rock_paper_scissors",
+                    "--package=d2_rock_paper_scissors"
+                ],
+                "filter": {
+                    "name": "d2_rock_paper_scissors",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd2_rock_paper_scissors'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d2_rock_paper_scissors",
+                    "--package=d2_rock_paper_scissors"
+                ],
+                "filter": {
+                    "name": "d2_rock_paper_scissors",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd3_rucksack'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d3_rucksack",
+                    "--package=d3_rucksack"
+                ],
+                "filter": {
+                    "name": "d3_rucksack",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd3_rucksack'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d3_rucksack",
+                    "--package=d3_rucksack"
+                ],
+                "filter": {
+                    "name": "d3_rucksack",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd4_camp_cleanup'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d4_camp_cleanup",
+                    "--package=d4_camp_cleanup"
+                ],
+                "filter": {
+                    "name": "d4_camp_cleanup",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd4_camp_cleanup'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d4_camp_cleanup",
+                    "--package=d4_camp_cleanup"
+                ],
+                "filter": {
+                    "name": "d4_camp_cleanup",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd5_supply_stacks'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d5_supply_stacks",
+                    "--package=d5_supply_stacks"
+                ],
+                "filter": {
+                    "name": "d5_supply_stacks",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd5_supply_stacks'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d5_supply_stacks",
+                    "--package=d5_supply_stacks"
+                ],
+                "filter": {
+                    "name": "d5_supply_stacks",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd6_tuning_trouble'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d6_tuning_trouble",
+                    "--package=d6_tuning_trouble"
+                ],
+                "filter": {
+                    "name": "d6_tuning_trouble",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd6_tuning_trouble'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d6_tuning_trouble",
+                    "--package=d6_tuning_trouble"
+                ],
+                "filter": {
+                    "name": "d6_tuning_trouble",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd7_no_space_left'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d7_no_space_left",
+                    "--package=d7_no_space_left"
+                ],
+                "filter": {
+                    "name": "d7_no_space_left",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd7_no_space_left'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d7_no_space_left",
+                    "--package=d7_no_space_left"
+                ],
+                "filter": {
+                    "name": "d7_no_space_left",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'd8_treetop_tree_house'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=d8_treetop_tree_house",
+                    "--package=d8_treetop_tree_house"
+                ],
+                "filter": {
+                    "name": "d8_treetop_tree_house",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'd8_treetop_tree_house'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=d8_treetop_tree_house",
+                    "--package=d8_treetop_tree_house"
+                ],
+                "filter": {
+                    "name": "d8_treetop_tree_house",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
