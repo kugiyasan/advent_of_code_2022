@@ -13,8 +13,8 @@ fn main() {
         .collect::<Vec<_>>()
         .windows(unique_chars)
         .position(|arr| {
-            let hashSet = HashSet::<_>::from_iter(arr.iter());
-            hashSet.len() == unique_chars
+            let hash_set = HashSet::<_>::from_iter(arr.iter());
+            hash_set.len() == unique_chars
         })
         .unwrap();
 

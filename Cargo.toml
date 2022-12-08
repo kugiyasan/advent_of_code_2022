@@ -7,5 +7,6 @@ members = [
     "d4_camp_cleanup",
     "d5_supply_stacks",
     "d6_tuning_trouble",
-    "d7_no_space_left"
+    "d7_no_space_left",
+    "d8_treetop_tree_house"
 ]
