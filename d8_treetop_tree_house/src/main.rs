@@ -1,8 +1,8 @@
 use std::fs;
 
 fn main() {
-    // let path = "input";
-    let path = "example";
+    let path = "input";
+    // let path = "example";
     let buf = fs::read_to_string(path).unwrap();
 
     let input: Vec<Vec<_>> = buf
@@ -19,32 +19,40 @@ fn main() {
 
     // top and bottom
     for x in 1..width - 1 {
-        let mut y = 0;
-        while input[y][x] < input[y + 1][x] {
-            seen[y + 1][x] = true;
-            y += 1;
+        let mut max_tree_height = input[0][x];
+        for y in 1..height - 1 {
+            if input[y][x] > max_tree_height {
+                seen[y][x] = true;
+                max_tree_height = input[y][x];
+            }
         }
 
-        let mut y = height - 1;
-        while input[y][x] < input[y - 1][x] {
-            seen[y - 1][x] = true;
-            y -= 1;
+        let mut max_tree_height = input[height - 1][x];
+        for y in (1..height - 1).rev() {
+            if input[y][x] > max_tree_height {
+                seen[y][x] = true;
+                max_tree_height = input[y][x];
+            }
         }
     }
 
     // left and right
     for y in 1..height - 1 {
-        let mut x = 0;
-        while input[y][x] < input[y][x + 1] {
-            seen[y][x + 1] = true;
-            x += 1;
+        let mut max_tree_height = input[y][0];
+        for x in 1..width - 1 {
+            if input[y][x] > max_tree_height {
+                seen[y][x] = true;
+                max_tree_height = input[y][x];
+            }
         }
 
-        let mut x = width - 1;
-        while input[y][x] < input[y][x - 1] {
-            println!("y: {y} x: {x}");
-            seen[y][x - 1] = true;
-            x -= 1;
+        let mut max_tree_height = input[y][width - 1];
+        for x in (1..width - 1).rev() {
+            // println!("y: {y} x: {x}");
+            if input[y][x] > max_tree_height {
+                seen[y][x] = true;
+                max_tree_height = input[y][x];
+            }
         }
     }
 
