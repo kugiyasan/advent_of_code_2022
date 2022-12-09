@@ -24,6 +24,7 @@ impl FromStr for Direction {
 fn main() {
     let path = "input";
     // let path = "example";
+    // let path = "example2";
     let buf = fs::read_to_string(path).unwrap();
 
     let input: Vec<_> = buf
@@ -38,31 +39,35 @@ fn main() {
         })
         .collect();
 
-    let mut head_pos = (0, 0);
-    let mut tail_pos = (0, 0);
+    let mut knots = [(0, 0); 10];
     let mut seen = HashSet::new();
 
     for (direction, amount) in input.into_iter() {
         for _ in 0..amount {
             match direction {
                 Direction::Up => {
-                    head_pos.1 += 1;
+                    knots[0].1 += 1;
                 }
                 Direction::Down => {
-                    head_pos.1 -= 1;
+                    knots[0].1 -= 1;
                 }
                 Direction::Left => {
-                    head_pos.0 += 1;
+                    knots[0].0 += 1;
                 }
                 Direction::Right => {
-                    head_pos.0 -= 1;
+                    knots[0].0 -= 1;
                 }
             }
 
-            follow_head(&head_pos, &mut tail_pos);
+            for i in 0..knots.len() - 1 {
+                let k1 = knots[i];
+                let k2 = &mut knots[i + 1];
+                follow_head(&k1, k2);
+            }
 
-            seen.insert(tail_pos);
-            println!("{:?} {:?}", head_pos, tail_pos);
+            seen.insert(knots[9]);
+            // println!("{:?} {:?}", head_pos, tail_pos);
+            println!("{:?}", knots);
         }
     }
 
