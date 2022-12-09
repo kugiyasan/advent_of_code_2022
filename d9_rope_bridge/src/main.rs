@@ -66,7 +66,6 @@ fn main() {
             }
 
             seen.insert(knots[9]);
-            // println!("{:?} {:?}", head_pos, tail_pos);
             println!("{:?}", knots);
         }
     }
@@ -78,6 +77,7 @@ fn follow_head(head_pos: &(i32, i32), tail_pos: &mut (i32, i32)) {
     let delta_x = (head_pos.0 - tail_pos.0).abs();
     let delta_y = (head_pos.1 - tail_pos.1).abs();
 
+    // head is at a knight move from tail
     if delta_x + delta_y == 3 {
         if delta_x == 1 {
             tail_pos.0 = head_pos.0;
