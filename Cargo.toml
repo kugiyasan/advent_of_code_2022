@@ -8,5 +8,6 @@ members = [
     "d5_supply_stacks",
     "d6_tuning_trouble",
     "d7_no_space_left",
-    "d8_treetop_tree_house"
+    "d8_treetop_tree_house",
+    "d9_rope_bridge"
 ]
