@@ -25,14 +25,13 @@ fn main() {
             let numbers: Vec<_> = line
                 .split(',')
                 .take(2)
-                .map(|range| {
+                .flat_map(|range| {
                     range
                         .split('-')
                         .take(2)
                         .map(|n| n.parse().unwrap())
                         .collect::<Vec<i32>>()
                 })
-                .flatten()
                 .collect();
             numbers
         })
@@ -42,12 +41,8 @@ fn main() {
         .iter()
         .map(|numbers| match numbers[..] {
             [n1, n2, n3, n4] => {
-                // if check_if_complete_overlap(n1..n2, n3..n4) {
-                if check_if_partial_overlap(n1..=n2, n3..=n4) {
-                    1
-                } else {
-                    0
-                }
+                // i32::from(check_if_complete_overlap(n1..n2, n3..n4))
+                i32::from(check_if_partial_overlap(n1..=n2, n3..=n4))
             }
             _ => {
                 panic!("No 4 numbers");

@@ -2,9 +2,9 @@ use std::{collections::HashSet, fs};
 
 fn get_letter_priority(letter: char) -> i32 {
     if letter.is_lowercase() {
-        (letter as u8 - 'a' as u8 + 1) as i32
+        (letter as u8 - b'a' + 1) as i32
     } else {
-        (letter as u8 - 'A' as u8 + 27) as i32
+        (letter as u8 - b'A' + 27) as i32
     }
 }
 

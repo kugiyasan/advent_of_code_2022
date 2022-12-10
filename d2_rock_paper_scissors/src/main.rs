@@ -103,7 +103,7 @@ fn part1(buf: &str) {
 
     let total_score: i32 = input
         .iter()
-        .map(|(other, hand)| hand.get_score(&other))
+        .map(|(other, hand)| hand.get_score(other))
         .sum();
 
     println!("{}", total_score);
@@ -123,7 +123,7 @@ fn part2(buf: &str) {
 
     let total_score: i32 = input
         .iter()
-        .map(|(hand, outcome)| outcome.get_score(&hand))
+        .map(|(hand, outcome)| outcome.get_score(hand))
         .sum();
 
     println!("{}", total_score);
@@ -134,6 +134,6 @@ fn main() {
     let mut buf = String::new();
     File::open(path).unwrap().read_to_string(&mut buf).unwrap();
 
-    // part1(&buf);
+    part1(&buf);
     part2(&buf);
 }
