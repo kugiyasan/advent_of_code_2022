@@ -9,5 +9,6 @@ members = [
     "d6_tuning_trouble",
     "d7_no_space_left",
     "d8_treetop_tree_house",
-    "d9_rope_bridge"
+    "d9_rope_bridge",
+    "d10_cathode_ray_tube"
 ]
