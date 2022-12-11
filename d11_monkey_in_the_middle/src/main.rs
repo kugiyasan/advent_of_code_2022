@@ -42,8 +42,7 @@ impl FromStr for Monkey {
             .next()
             .unwrap()
             .split(": ")
-            .skip(1)
-            .next()
+            .nth(1)
             .unwrap()
             .split(", ")
             .map(|s| s.parse::<i64>().unwrap())
@@ -89,7 +88,7 @@ fn main() {
 
     for _round in 0..10000 {
         for i in 0..monkeys.len() {
-            let items = mem::replace(&mut monkeys[i].items, Vec::new());
+            let items = mem::take(&mut monkeys[i].items);
             inspections[i] += items.len();
             for mut item in items {
                 let monkey = &mut monkeys[i];
@@ -117,7 +116,7 @@ fn main() {
     println!("{}", values[0] * values[1])
 }
 
-fn print_monkeys(monkeys: &Vec<Monkey>) {
+fn print_monkeys(monkeys: &[Monkey]) {
     let monkeys = monkeys.iter().map(|m| &m.items).collect::<Vec<_>>();
     for monkey in monkeys {
         println!("{:?}", monkey);
