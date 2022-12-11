@@ -10,5 +10,6 @@ members = [
     "d7_no_space_left",
     "d8_treetop_tree_house",
     "d9_rope_bridge",
-    "d10_cathode_ray_tube"
+    "d10_cathode_ray_tube",
+    "d11_monkey_in_the_middle"
 ]
