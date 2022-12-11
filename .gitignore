@@ -2,3 +2,4 @@ target/
 cookies.txt
 input
 aoc_2022_day05_large_input.txt
+main.py

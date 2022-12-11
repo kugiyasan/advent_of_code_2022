@@ -83,6 +83,7 @@ fn main() {
         .unwrap();
 
     print_monkeys(&monkeys);
+    println!("lcm: {}", lcm);
 
     let mut inspections = vec![0; monkeys.len()];
 
@@ -105,15 +106,19 @@ fn main() {
                 }
             }
         }
-        print_monkeys(&monkeys);
+        // print_monkeys(&monkeys);
     }
 
-    let result: Vec<_> = monkeys.into_iter().map(|m| m.items).collect();
-    println!("{:?}", result);
+    print_monkeys(&monkeys);
     println!("{:?}", inspections);
     inspections.sort();
-    let values = inspections.iter().rev().take(2).collect::<Vec<_>>();
-    println!("{}", values[0] * values[1])
+    let value = inspections
+        .into_iter()
+        .rev()
+        .take(2)
+        .reduce(|acc, x| acc * x)
+        .unwrap();
+    println!("{}", value)
 }
 
 fn print_monkeys(monkeys: &[Monkey]) {
