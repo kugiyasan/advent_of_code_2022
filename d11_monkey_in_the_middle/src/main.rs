@@ -77,17 +77,23 @@ fn main() {
         .map(|block| block.parse::<Monkey>().unwrap())
         .collect();
 
+    let lcm = monkeys
+        .iter()
+        .map(|monkey| monkey.test[0])
+        .reduce(|acc, x| acc * x)
+        .unwrap();
+
     print_monkeys(&monkeys);
 
     let mut inspections = vec![0; monkeys.len()];
 
-    for _round in 0..20 {
+    for _round in 0..10000 {
         for i in 0..monkeys.len() {
             let items = mem::replace(&mut monkeys[i].items, Vec::new());
             inspections[i] += items.len();
             for mut item in items {
                 let monkey = &mut monkeys[i];
-                item = (monkey.operation)(item) / 3;
+                item = (monkey.operation)(item) % lcm;
 
                 let divider = monkey.test[0];
                 let true_throw = monkey.test[1] as usize;
