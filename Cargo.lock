@@ -11,6 +11,10 @@ name = "d11_monkey_in_the_middle"
 version = "0.1.0"
 
 [[package]]
+name = "d12_hill_climbing"
+version = "0.1.0"
+
+[[package]]
 name = "d1_calorie_counting"
 version = "0.1.0"
 

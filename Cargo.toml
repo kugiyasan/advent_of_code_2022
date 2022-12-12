@@ -11,5 +11,6 @@ members = [
     "d8_treetop_tree_house",
     "d9_rope_bridge",
     "d10_cathode_ray_tube",
-    "d11_monkey_in_the_middle"
+    "d11_monkey_in_the_middle",
+    "d12_hill_climbing"
 ]
