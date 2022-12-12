@@ -141,16 +141,23 @@ fn main() {
     let width = buf.lines().next().unwrap().len();
     println!("height {height} width {width}");
 
-    let start_pos = grid.iter().position(|&c| c == 0).unwrap();
+    let start_positions = grid
+        .iter()
+        .enumerate()
+        .filter_map(|(i, &c)| if c <= 1 { Some(i) } else { None })
+        .collect::<Vec<_>>();
+
     let grid = Grid::new(grid, width, height);
     let mut seen = HashSet::new();
     let mut parents = vec![None; width * height];
 
     let mut queue = VecDeque::new();
-    queue.push_back(Node {
-        position: start_pos,
-        parent: None,
-    });
+    for start_pos in start_positions {
+        queue.push_back(Node {
+            position: start_pos,
+            parent: None,
+        });
+    }
 
     while let Some(node) = queue.pop_front() {
         if seen.contains(&node.position) {
