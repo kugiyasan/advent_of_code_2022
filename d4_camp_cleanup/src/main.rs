@@ -37,12 +37,20 @@ fn main() {
         })
         .collect();
 
+        print_answer(&input, true);
+        print_answer(&input, false);
+}
+
+fn print_answer(input: &[Vec<i32>], part1: bool) {
     let result: Vec<_> = input
         .iter()
         .map(|numbers| match numbers[..] {
             [n1, n2, n3, n4] => {
-                // i32::from(check_if_complete_overlap(n1..n2, n3..n4))
-                i32::from(check_if_partial_overlap(n1..=n2, n3..=n4))
+                if part1 {
+                    i32::from(check_if_complete_overlap(n1..n2, n3..n4))
+                } else {
+                    i32::from(check_if_partial_overlap(n1..=n2, n3..=n4))
+                }
             }
             _ => {
                 panic!("No 4 numbers");

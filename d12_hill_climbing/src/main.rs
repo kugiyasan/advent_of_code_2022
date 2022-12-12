@@ -32,10 +32,6 @@ impl Grid {
         (position % self.width, position / self.width)
     }
 
-    fn get_char(&self, position: usize) -> char {
-        Self::cell_to_char(self.grid[position])
-    }
-
     fn cell_to_char(c: u8) -> char {
         match c {
             0 => 'S',
