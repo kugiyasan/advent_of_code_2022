@@ -1,31 +1,55 @@
+from functools import cmp_to_key
 from itertools import zip_longest
 from pathlib import Path
-from typing import List
+from typing import Any, List
 
 
-def main() -> None:
-    here = Path(__file__).parent
-    # path = here.parent / "example"
-    path = here.parent / "input"
+def part1(path: Path) -> None:
     inp = []
 
     with open(path) as f:
         f = f.read().strip()
-        for i, block in enumerate(f.split("\n\n")):
+        for block in f.split("\n\n"):
             line1, line2 = block.split("\n")
             line1 = eval(line1)
             line2 = eval(line2)
+            inp.append((line1, line2))
 
-            comparison = compare(line1, line2)
-            print(f"Pair {i + 1}: {comparison}")
-            if comparison == 1:
-                inp.append(i + 1)
+    result = []
+    for i, (line1, line2) in enumerate(inp):
+        comparison = compare(line1, line2)
+        # print(f"Pair {i + 1}: {comparison}")
+        if comparison == 1:
+            result.append(i + 1)
 
-    print(inp)
-    print(sum(inp))
+    print(result)
+    print("PART 1:", sum(result))
 
 
-def compare(line1: List[any], line2: List[any]) -> int:
+def part2(path: Path) -> None:
+    inp = []
+
+    with open(path) as f:
+        for line in f.readlines():
+            if line == "\n":
+                continue
+            line = eval(line)
+            inp.append(line)
+
+    key1 = [[2]]
+    key2 = [[6]]
+    inp.append(key1)
+    inp.append(key2)
+
+    result = sorted(inp, key=cmp_to_key(compare), reverse=True)
+    i1 = result.index(key1) + 1
+    i2 = result.index(key2) + 1
+
+    print("\n".join(str(i) for i in result))
+    print("PART 2:", i1, i2, i1 * i2)
+
+
+def compare(line1: List[Any], line2: List[Any]) -> int:
     for a, b in zip_longest(line1, line2):
         if a is None:
             return 1
@@ -49,6 +73,15 @@ def compare(line1: List[any], line2: List[any]) -> int:
                 return comparison
 
     return 0
+
+
+def main() -> None:
+    here = Path(__file__).parent
+    path = here.parent / "example"
+    # path = here.parent / "input"
+
+    part1(path)
+    part2(path)
 
 
 if __name__ == "__main__":
