@@ -12,5 +12,6 @@ members = [
     "d9_rope_bridge",
     "d10_cathode_ray_tube",
     "d11_monkey_in_the_middle",
-    "d12_hill_climbing"
+    "d12_hill_climbing",
+    "d13_distress_signal"
 ]
