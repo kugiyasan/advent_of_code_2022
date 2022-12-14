@@ -17,6 +17,7 @@ cargo add aoc_utils
 
 cat > src/main.rs << EOF
 use std::fs;
+use aoc_utils::submit;
 
 fn main() {
     let path = "input";
@@ -26,6 +27,7 @@ fn main() {
     let input: Vec<_> = buf.trim().split('\n').collect();
 
     println!("{:?}", &input[0..5]);
+    // submit("1", false);
 }
 EOF
 
