@@ -17,8 +17,11 @@ struct Grid {
 impl Grid {
     fn new(min_width: usize, max_width: usize, height: usize) -> Self {
         let width = max_width - min_width + 3;
+        let mut cells = vec![vec![Cell::Air; width]; height + 2];
+        cells[height + 1] = vec![Cell::Rock; width];
+
         Self {
-            cells: vec![vec![Cell::Air; width]; height],
+            cells,
             sand_spawn_point: (500 - min_width + 1, 0),
             sand_count: 0,
         }
@@ -43,8 +46,15 @@ impl Grid {
         println!();
     }
 
+    /// Returns true if done
+    /// In part 1, if the sand goes into the void
+    /// In part 2, if the sand can't drop
     fn drop_sand(&mut self) -> bool {
         let (mut x, mut y) = self.sand_spawn_point;
+        if self.cells[y][x] == Cell::Sand {
+            return true;
+        }
+
         loop {
             if y >= self.cells.len() - 1 {
                 return true;
@@ -109,6 +119,10 @@ fn main() {
         .max()
         .unwrap()
         + 1;
+
+    // padding the grid to let sand drop properly
+    let min_width = min_width - 200;
+    let max_width = max_width + 200;
 
     let mut grid = Grid::new(min_width, max_width, max_height);
 
