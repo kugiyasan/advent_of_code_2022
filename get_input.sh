@@ -3,21 +3,19 @@
 set -eo pipefail
 
 # cookies.txt should contain a line with "session=<your session cookie>"
-COOKIES=$(cat cookies.txt)
-DAY=$1
-NAME=$2
-FOLDER="d$1_$2"
-MAINFILE="$FOLDER/src/main.rs"
-
-curl -O --cookie $COOKIES "https://adventofcode.com/2022/day/$DAY/input"
-
-cargo new $FOLDER
-mv input $FOLDER
+local COOKIES=$(cat cookies.txt)
+local DAY=$1
+local NAME=$2
+local FOLDER="d$1_$2"
 
 # Append the new workspace to Cargo.toml
 sed -E -i "s/(^    \".+\"$)/\1,\n    \"$FOLDER\"/g" Cargo.toml
 
-cat > $MAINFILE << EOF
+cargo new $FOLDER
+cd $FOLDER
+cargo add aoc_utils
+
+cat > src/main.rs << EOF
 use std::fs;
 
 fn main() {
@@ -30,3 +28,10 @@ fn main() {
     println!("{:?}", &input[0..5]);
 }
 EOF
+
+if [ -e "input" ]; then
+    echo 'input file already exists' >&2
+    exit 1
+fi
+
+curl -O --cookie $COOKIES "https://adventofcode.com/2022/day/$DAY/input"

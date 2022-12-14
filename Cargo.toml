@@ -2,6 +2,7 @@
 
 members = [
     "aoc_utils",
+    "aoc_utils_tests",
     "d1_calorie_counting",
     "d2_rock_paper_scissors",
     "d3_rucksack",

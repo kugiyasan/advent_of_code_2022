@@ -10,6 +10,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 chrono = "0.4"
+scraper = "0.13"
 pyo3 = { version = "0.17.3", features = ["extension-module"] }
 pyo3-asyncio = { version = "0.17.0", features = ["tokio-runtime"] }
 reqwest = "0.11"
