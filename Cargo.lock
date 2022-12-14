@@ -213,6 +213,10 @@ name = "d13_distress_signal"
 version = "0.1.0"
 
 [[package]]
+name = "d14_regolith"
+version = "0.1.0"
+
+[[package]]
 name = "d1_calorie_counting"
 version = "0.1.0"
 

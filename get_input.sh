@@ -3,10 +3,10 @@
 set -eo pipefail
 
 # cookies.txt should contain a line with "session=<your session cookie>"
-local COOKIES=$(cat cookies.txt)
-local DAY=$1
-local NAME=$2
-local FOLDER="d$1_$2"
+COOKIES=$(cat cookies.txt)
+DAY=$1
+NAME=$2
+FOLDER="d$1_$2"
 
 # Append the new workspace to Cargo.toml
 sed -E -i "s/(^    \".+\"$)/\1,\n    \"$FOLDER\"/g" Cargo.toml
