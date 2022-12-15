@@ -1,6 +1,14 @@
 // use aoc_utils::submit;
 use std::fs;
 
+#[derive(Debug, Clone)]
+enum Cell {
+    Nothing,
+    Beacon,
+    Sensor,
+    NoBeacon,
+}
+
 fn main() {
     let path = "input";
     // let path = "example";
@@ -9,42 +17,61 @@ fn main() {
     let input: Vec<((i32, i32), (i32, i32))> = buf.trim().split('\n').map(parse_line).collect();
 
     let (min_x, max_x, min_y, max_y) = get_bounding_box(&input);
-    let min_x = min_x - 10000000;
-    let max_x = max_x + 10000000;
+    // let min_x = min_x - 10000000;
+    // let max_x = max_x + 10000000;
+    // let y = if path == "input" { 2000000 } else { 10 };
 
-    let y = if path == "input" { 2000000 } else { 10 };
+    let upper_bound = if path == "input" { 4000000 } else { 20 };
 
-    let mut count = 0;
-    let mut line = vec!['.'; (max_x - min_x + 1) as usize];
+    let min_x = min_x.max(0);
+    let max_x = max_x.min(upper_bound);
+    let min_y = min_y.max(0);
+    let max_y = max_y.min(upper_bound);
 
-    for x in min_x..=max_x {
-        for (sensor, beacon) in input.iter() {
-            if sensor == &(x, y) {
-                line[(x - min_x) as usize] = 'S';
-                continue;
-            }
+    println!(
+        "min_x: {} max_x: {} min_y: {} max_y: {}",
+        min_x, max_x, min_y, max_y
+    );
 
-            if beacon == &(x, y) {
-                line[(x - min_x) as usize] = 'B';
-                continue;
-            }
-
-            let dist1 = get_manhattan_distance(sensor, beacon);
-            let dist2 = get_manhattan_distance(sensor, &(x, y));
-            // println!("{:?} {:?} {:?} {} {}", (x, y), sensor, beacon, dist1, dist2);
-            if dist1 >= dist2 {
-                count += 1;
-                line[(x - min_x) as usize] = '#';
-                break;
+    for y in min_y..=max_y {
+        if y % 100 == 0 {
+            println!("y: {}", y);
+        }
+        for x in min_x..=max_x {
+            let cell = guess_cell(&input, x, y);
+            match cell {
+                Cell::Nothing => {
+                    let tuning_frequency = x * 4000000 + y;
+                    println!("x: {} y: {} tuning_frequency: {}", x, y, tuning_frequency);
+                }
+                _ => (),
             }
         }
     }
 
     // println!("{:?}", &input[0..5]);
-    println!("min_x: {} max_x: {} min_y: {} max_y: {}", min_x, max_x, min_y, max_y);
-    println!("{}", count);
     // println!("{:?}", line.iter().collect::<String>());
     // submit("1", false);
+}
+
+fn guess_cell(input: &Vec<((i32, i32), (i32, i32))>, x: i32, y: i32) -> Cell {
+    for (sensor, beacon) in input.iter() {
+        if sensor == &(x, y) {
+            return Cell::Sensor;
+        }
+
+        if beacon == &(x, y) {
+            return Cell::Beacon;
+        }
+
+        let dist1 = get_manhattan_distance(sensor, beacon);
+        let dist2 = get_manhattan_distance(sensor, &(x, y));
+        // println!("{:?} {:?} {:?} {} {}", (x, y), sensor, beacon, dist1, dist2);
+        if dist1 >= dist2 {
+            return Cell::NoBeacon;
+        }
+    }
+    Cell::Nothing
 }
 
 fn get_bounding_box(input: &Vec<((i32, i32), (i32, i32))>) -> (i32, i32, i32, i32) {
