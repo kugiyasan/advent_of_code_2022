@@ -1,4 +1,5 @@
 // use aoc_utils::submit;
+use rayon::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 use std::fs;
 
 #[derive(Debug, Clone)]
@@ -12,15 +13,11 @@ enum Cell {
 fn main() {
     let path = "input";
     // let path = "example";
-    let buf = fs::read_to_string(path).unwrap();
 
+    let buf = fs::read_to_string(path).unwrap();
     let input: Vec<((i32, i32), (i32, i32))> = buf.trim().split('\n').map(parse_line).collect();
 
     let (min_x, max_x, min_y, max_y) = get_bounding_box(&input);
-    // let min_x = min_x - 10000000;
-    // let max_x = max_x + 10000000;
-    // let y = if path == "input" { 2000000 } else { 10 };
-
     let upper_bound = if path == "input" { 4000000 } else { 20 };
 
     let min_x = min_x.max(0);
@@ -33,21 +30,26 @@ fn main() {
         min_x, max_x, min_y, max_y
     );
 
-    for y in min_y..=max_y {
-        if y % 100 == 0 {
-            println!("y: {}", y);
-        }
-        for x in min_x..=max_x {
-            let cell = guess_cell(&input, x, y);
-            match cell {
-                Cell::Nothing => {
-                    let tuning_frequency = x * 4000000 + y;
-                    println!("x: {} y: {} tuning_frequency: {}", x, y, tuning_frequency);
+    (min_y..=max_y)
+        .collect::<Vec<_>>()
+        .into_par_iter()
+        .chunks(100)
+        .for_each(|range| {
+            println!("y: {}", range[0]);
+
+            for y in range {
+                for x in min_x..=max_x {
+                    let cell = guess_cell(&input, x, y);
+                    match cell {
+                        Cell::Nothing => {
+                            let tuning_frequency = x * 4000000 + y;
+                            println!("x: {} y: {} tuning_frequency: {}", x, y, tuning_frequency);
+                        }
+                        _ => (),
+                    }
                 }
-                _ => (),
             }
-        }
-    }
+        });
 
     // println!("{:?}", &input[0..5]);
     // println!("{:?}", line.iter().collect::<String>());
@@ -66,7 +68,6 @@ fn guess_cell(input: &Vec<((i32, i32), (i32, i32))>, x: i32, y: i32) -> Cell {
 
         let dist1 = get_manhattan_distance(sensor, beacon);
         let dist2 = get_manhattan_distance(sensor, &(x, y));
-        // println!("{:?} {:?} {:?} {} {}", (x, y), sensor, beacon, dist1, dist2);
         if dist1 >= dist2 {
             return Cell::NoBeacon;
         }
