@@ -217,6 +217,10 @@ name = "d14_regolith"
 version = "0.1.0"
 
 [[package]]
+name = "d15_beacon_exclusive_zone"
+version = "0.1.0"
+
+[[package]]
 name = "d1_calorie_counting"
 version = "0.1.0"
 
