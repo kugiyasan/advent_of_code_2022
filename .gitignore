@@ -6,3 +6,5 @@ cookies.txt
 input
 aoc_2022_day05_large_input.txt
 a.txt
+perf.data*
+flamegraph.svg
