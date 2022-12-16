@@ -1,5 +1,8 @@
 // use aoc_utils::submit;
-use rayon::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
+use rayon::{
+    prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator},
+    slice::ParallelSlice,
+};
 use std::fs;
 
 fn main() {
@@ -10,18 +13,49 @@ fn main() {
     let input: Vec<((i32, i32), (i32, i32))> = buf.trim().split('\n').map(parse_line).collect();
 
     let upper_bound = if path == "input" { 4000000 } else { 20 };
-    let (min_x, max_x, min_y, max_y) = get_bounding_box(&input, upper_bound);
-    let min_y = 44000;
-    let max_y = 1000000;
+    part2(input, upper_bound);
 
+    // visualize_grid(input);
+}
+
+fn visualize_grid(input: Vec<((i32, i32), (i32, i32))>) {
+    let mut grid = vec![vec!['.'; 400]; 400];
+    for (sensor, beacon) in input.iter() {
+        let divider = 10000;
+        if sensor.0 >= 0 && sensor.1 >= 0 {
+            let sx = (sensor.0 / divider) as usize;
+            let sy = (sensor.1 / divider) as usize;
+            grid[sy][sx] = 'S';
+        }
+        if beacon.0 >= 0 && beacon.1 >= 0 {
+            let bx = (beacon.0 / divider) as usize;
+            let by = (beacon.1 / divider) as usize;
+            grid[by][bx] = 'B';
+        }
+    }
+    for row in grid {
+        for cell in row {
+            print!("{}", cell);
+        }
+        println!();
+    }
+}
+
+fn part2(input: Vec<((i32, i32), (i32, i32))>, upper_bound: i32) {
+    let (min_x, max_x, min_y, max_y) = get_bounding_box(&input, upper_bound);
+    let min_y = 2000000;
+    let max_y = 2500000;
+    // let min_y = 0;
+    // let max_y = 20;
+    // let min_y = 0;
+    // let max_y = 1000;
     (min_y..=max_y)
         .collect::<Vec<_>>()
-        .into_par_iter()
-        .chunks(100)
+        .par_chunks(100)
         .for_each(|range| {
             println!("y: {}", range[0]);
 
-            for y in range {
+            for &y in range {
                 let mut x = min_x;
                 while x <= max_x {
                     x += guess_cell(&input, x, y);
@@ -32,22 +66,25 @@ fn main() {
 
 fn guess_cell(input: &Vec<((i32, i32), (i32, i32))>, x: i32, y: i32) -> i32 {
     for (sensor, beacon) in input.iter() {
-        if sensor == &(x, y) {
-            return 1;
-        }
-
         if beacon == &(x, y) {
             return 1;
         }
 
         let dist1 = get_manhattan_distance(sensor, beacon);
+
+        if sensor == &(x, y) {
+            return dist1 + 1;
+        }
+
         let dist2 = get_manhattan_distance(sensor, &(x, y));
         if dist1 >= dist2 {
             // println!("{:?} {:?} {} {}", (x, y), sensor, dist1, dist2);
             let dx = sensor.0 - x;
+            // let dy = (sensor.1 - y).abs();
             if dx > 0 {
-                return dx;
+                return dx * 2 + 1;
             }
+            // return dy + dx + 1;
             return 1;
         }
     }
