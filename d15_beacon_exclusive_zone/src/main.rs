@@ -43,25 +43,59 @@ fn visualize_grid(input: Vec<((i32, i32), (i32, i32))>) {
 
 fn part2(input: Vec<((i32, i32), (i32, i32))>, upper_bound: i32) {
     let (min_x, max_x, min_y, max_y) = get_bounding_box(&input, upper_bound);
-    let min_y = 2000000;
-    let max_y = 2500000;
+    // let min_y = 2000000;
+    // let max_y = 2500000;
     // let min_y = 0;
     // let max_y = 20;
     // let min_y = 0;
     // let max_y = 1000;
-    (min_y..=max_y)
-        .collect::<Vec<_>>()
-        .par_chunks(100)
-        .for_each(|range| {
-            println!("y: {}", range[0]);
 
-            for &y in range {
-                let mut x = min_x;
-                while x <= max_x {
-                    x += guess_cell(&input, x, y);
-                }
+    for (sensor, beacon) in input.iter() {
+        let dist = get_manhattan_distance(sensor, beacon);
+        for (x, y) in get_outer_perimeter(sensor, dist) {
+            if 0 <= x && x < upper_bound && 0 <= y && y <= upper_bound {
+                guess_cell(&input, x, y);
             }
-        });
+        }
+    }
+}
+
+fn get_outer_perimeter(sensor: &(i32, i32), dist: i32) -> Vec<(i32, i32)> {
+    let mut perimeter = vec![];
+
+    // far right
+    let mut x = dist + 1;
+    let mut y = 0;
+
+    // towards bottom
+    while x > 0 {
+        perimeter.push((sensor.0 + x, sensor.1 + y));
+        x -= 1;
+        y -= 1;
+    }
+
+    // towards left
+    while y < 0 {
+        perimeter.push((sensor.0 + x, sensor.1 + y));
+        x -= 1;
+        y += 1;
+    }
+
+    // towards top
+    while x < 0 {
+        perimeter.push((sensor.0 + x, sensor.1 + y));
+        x += 1;
+        y += 1;
+    }
+
+    // towards right
+    while y > 0 {
+        perimeter.push((sensor.0 + x, sensor.1 + y));
+        x += 1;
+        y -= 1;
+    }
+
+    perimeter
 }
 
 fn guess_cell(input: &Vec<((i32, i32), (i32, i32))>, x: i32, y: i32) -> i32 {
@@ -89,7 +123,7 @@ fn guess_cell(input: &Vec<((i32, i32), (i32, i32))>, x: i32, y: i32) -> i32 {
         }
     }
 
-    let tuning_frequency = x * 4000000 + y;
+    let tuning_frequency = x as i64 * 4000000 + y as i64;
     println!("x: {} y: {} tuning_frequency: {}", x, y, tuning_frequency);
     return 1;
 }
