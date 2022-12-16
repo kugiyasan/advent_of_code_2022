@@ -17,5 +17,6 @@ members = [
     "d12_hill_climbing",
     "d13_distress_signal",
     "d14_regolith",
-    "d15_beacon_exclusive_zone"
+    "d15_beacon_exclusive_zone",
+    "d16_proboscidea_volcanium"
 ]
