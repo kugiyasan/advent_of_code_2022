@@ -1,5 +1,7 @@
+extern crate pathfinding;
+use pathfinding::prelude::dfs_reach;
 use std::{
-    collections::{BinaryHeap, HashMap, HashSet},
+    collections::{HashMap, HashSet},
     fs,
     str::FromStr,
 };
@@ -8,7 +10,7 @@ use std::{
 #[derive(Debug, Clone, Eq, Hash, Ord, PartialEq)]
 struct Valve {
     name: String,
-    flow_rate: u32,
+    flow_rate: i32,
     lead_to: Vec<String>,
 }
 
@@ -57,44 +59,106 @@ fn main() {
     for valve in input {
         valves.insert(valve.name.clone(), valve);
     }
-
     println!("{:?}", valves);
-    part1(&valves, first_valve_name);
+
+    let valves_indexes = valves.values().collect::<Vec<_>>();
+
+    let mut useful_valves = Vec::new();
+    for valve in valves.values() {
+        if valve.flow_rate != 0 {
+            useful_valves.push(valve.name.clone());
+        }
+    }
+    println!("{:#?}", useful_valves);
+
+    let mut distance_matrix = vec![vec![-1; useful_valves.len()]; useful_valves.len()];
+    for (i, valve1) in useful_valves.iter().enumerate() {
+        for valve2 in useful_valves[i + 1..].iter() {
+            let distance = find_distance(&valves, &mut HashSet::new(), valve1, valve2);
+            let y = useful_valves.iter().position(|v| v == valve1).unwrap();
+            let x = useful_valves.iter().position(|v| v == valve2).unwrap();
+            distance_matrix[y][x] = distance;
+        }
+    }
+    println!("{:?}", distance_matrix);
+    let dfs_reachable = dfs_reach(&first_valve_name, |&v| {
+        let v = valves.get(v).unwrap();
+        v.lead_to.iter()
+    });
+
+    for i in dfs_reachable {
+        println!("{:?}", i);
+    }
+
+    // let pressure_release = dfs(&valves, &first_valve_name, 31, 0);
+    // println!("{}", pressure_release);
 
     // println!("{:?}", &input[0..5]);
     // submit("1", false);
 }
 
-fn part1(valves: &HashMap<String, Valve>, first_valve: String) {
-    let mut minutes_left = 31;
-    let mut pressure_release = 0;
+fn find_distance(
+    valves: &HashMap<String, Valve>,
+    seen: &mut HashSet<String>,
+    valve1: &str,
+    valve2: &str,
+) -> i32 {
+    let valve1 = valves.get(valve1).unwrap();
+    let valve2 = valves.get(valve2).unwrap();
 
-    let mut queue = BinaryHeap::new();
-    let mut seen = HashSet::new();
-    let valve = valves.get(&first_valve).unwrap();
-    queue.push(valve);
+    if valve1.name == valve2.name {
+        return 0;
+    }
 
-    while let Some(valve) = queue.pop() {
-        if seen.contains(&valve.name) {
-            continue;
-        }
-        seen.insert(&valve.name);
-        minutes_left -= 1;
+    if valve1.lead_to.contains(&valve2.name) {
+        return 1;
+    }
 
-        if valve.flow_rate != 0 {
-            minutes_left -= 1;
-            pressure_release += valve.flow_rate * minutes_left;
-        }
-        println!("{} {}min * {}", valve.name, minutes_left, valve.flow_rate);
+    seen.insert(valve1.name.clone());
+    valve1
+        .lead_to
+        .iter()
+        .filter_map(|v| {
+            if !seen.contains(v) {
+                Some(find_distance(valves, seen, v, &valve2.name))
+            } else {
+                None
+            }
+        })
+        .min()
+        .unwrap_or(-1)
+        + 1
+}
 
-        for tunnel in valve.lead_to.iter() {
-            queue.push(valves.get(tunnel).unwrap());
-        }
+fn my_dfs(
+    valves: &HashMap<String, Valve>,
+    current_valve_name: &str,
+    minutes_left: i32,
+    pressure_release: i32,
+) -> i32 {
+    if minutes_left <= 0 {
+        return pressure_release;
+    }
+    println!(
+        "dfs {} {} {}",
+        current_valve_name, minutes_left, pressure_release
+    );
+    let valve = valves.get(current_valve_name).unwrap();
 
-        if minutes_left <= 0 {
-            break;
+    let mut biggest_child_pressure = 0;
+
+    if valve.flow_rate != 0 {
+        let pressure = pressure_release + valve.flow_rate * minutes_left;
+        for valve_name in valve.lead_to.iter() {
+            let child_pressure = my_dfs(valves, valve_name, minutes_left - 2, pressure);
+            biggest_child_pressure = biggest_child_pressure.max(child_pressure);
         }
     }
 
-    println!("{}", pressure_release);
+    for valve_name in valve.lead_to.iter() {
+        let child_pressure = my_dfs(valves, valve_name, minutes_left - 1, pressure_release);
+        biggest_child_pressure = biggest_child_pressure.max(child_pressure);
+    }
+
+    pressure_release + biggest_child_pressure
 }
